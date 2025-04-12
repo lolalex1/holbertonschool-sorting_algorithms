@@ -5,13 +5,14 @@
  * @a: pointer to first integer
  * @b: pointer to second integer
  */
-void swap(int *a, int *b)
+void swap(int *a, int *b, int *did_swap)
 {
-	if (a != b)
+	if (*a != *b)
 	{
 		int temp = *a;
 		*a = *b;
 		*b = temp;
+		*did_swap = 1;
 	}
 }
 
@@ -27,22 +28,24 @@ void swap(int *a, int *b)
 int lomuto_partition(int *array, int low, int high, size_t size)
 {
 	int pivot = array[high];
-	int i = low - 1;
-	int j;
+	int i = low - 1, j, did_swap;
 
 	for (j = low; j < high; j++)
 	{
 		if (array[j] < pivot)
 		{
 			i++;
-			swap(&array[i], &array[j]);
-			if (i != j)
+			did_swap = 0;
+			swap(&array[i], &array[j], &did_swap);
+			if (did_swap)
 				print_array(array, size);
 		}
 	}
-	swap(&array[i + 1], &array[high]);
-	if (i + 1 != high)
+	did_swap = 0;
+	swap(&array[i + 1], &array[high], &did_swap);
+	if (did_swap)
 		print_array(array, size);
+
 	return (i + 1);
 }
 
